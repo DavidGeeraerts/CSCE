@@ -29,7 +29,7 @@ setlocal enableextensions
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 SET "SCRIPT_NAME=Command Shell Color Explorer (CSCE)"
-SET SCRIPT_VERSION=2.2.0
+SET SCRIPT_VERSION=2.3.0
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 Title %SCRIPT_NAME% %SCRIPT_VERSION%
@@ -92,21 +92,329 @@ SET sColor=%Color1%%Color2%
 
 ::	Random Variables
 SET /A Remaining=%iterations%-%Counter%
-::
+
+SET COLOR_CLASS=BEST,GOOD,MARGINAL,SOLID,ERROR
+
 SET BESTCOLORS=07 0A 0B 0C 0D 0E 0F 17 1A 1B 1C 1D 1E 1F 2A 2B 2F 37 3A 3B 3E 3F 47 4B 4E 4F 5E 5F 60 6A 6B 6E 6F 70 71 72 73 74 75 79 7F 80 81 87 8A 8B 8E 8F 9B 9E 9F A0 B0 C0 CF D0 E0 E1 E4 F0 F1 F2 F3 F4 F5 F9 FC
 :: Good colors
-SET GOODCOLORS=02 03 06 08 12 13 16 18 20 21 30 48 4A 4C 4D 57 5A 5B 5C 5D 64 65 67 69 76 78 7C 7E 84 85 89 97 9A 9D A1 A2 A3 A4 A5 A6 A8 A9 B1 B2 B3 B4 B5 B6 B8 B9 C1 C9 CE D9 DE DF E2 E3 E5 E6 E8 E9 EC ED F6 F8 FD
+SET GOODCOLORS=02 03 06 08 12 13 16 18 20 21 30 48 4A 4C 4D 57 5A 5B 5C 5D 64 65 67 69 76 78 7C 7E 84 85 89 97 9A 9D A1 A2 A3 A4 A5 A6 A8 A9 B1 B2 B3 B4 B5 B6 B8 B9 C1 C9 CE D1 D9 DE DF E2 E3 E5 E6 E8 E9 EC ED F6 F8 FD
 :: Marginal Colors
-SET MARGINALCOLORS=04 05 09 14 15 25 26 27 28 29 2C 2D 2E 31 34 35 36 38 39 3C 3D 40 41 42 43 46 49 50 51 56 58 59 61 62 63 6C 6D 7A 7B 7D 82 83 8C 8D 90 91 96 98 9C AD AE AF B7 BC BD BF C2 C3 C4 C5 C6 C7 C8 CA CB  D1 D2 D3 D4 D5 D6 D8 DA DB E7 EA EB F7 FA FB
+SET MARGINALCOLORS=04 05 09 14 15 24 25 26 27 28 29 2C 2D 2E 31 34 35 36 38 39 3C 3D 40 41 42 43 46 49 50 51 56 58 59 61 62 63 6C 6D 7A 7B 7D 82 83 8C 8D 90 91 96 98 9C AC AD AE AF B7 BC BD BF C2 C3 C4 C5 C6 C7 C8 CA CB D2 D3 D4 D5 D6 D8 DA DB E7 EA EB F7 FA FB
 :: These are bad color combinations
-set SOLIDCOLORS=01 10 19 23 24 32 45 52 53 54 68 86 92 93 94 95 A7 AB BA BE CD D7 DC EF FE
-
-
+SET SOLIDCOLORS=01 10 19 23 32 45 52 53 54 68 86 92 93 94 95 A7 AB BA BE CD D7 DC EF FE
+:: Colors that produce an errorlevel 1
+SET ERRORCOLORS=00 11 22 33 44 55 66 77 88 99 AA BB CC DD EE FF
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Custom Statement in a text file
 IF EXIST "%~dp0\statement.txt" SET /P STATEMENT= < "%~dp0\statement.txt"
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+mode con:cols=52 lines=20
+:: Even though it looks awkward in the editor its formatted correctly for the screen.
+Echo  #########################################
+Echo  #  %SCRIPT_NAME%  #
+Echo  #  Version=%SCRIPT_VERSION%                        #
+Echo  #########################################
+ECHO.
+ECHO Best: Awsome color combintation!
+ECHO Good: Good color combination.
+ECHO Marginal: Not very readable, poor color combination.
+ECHO Solid: Color combo produces nearly a solid color.
+ECHo Error: color combo not visible.
+ECHO.
+SET COLOR_CLASS_POSITION=1
+:loop 
+IF %COLOR_CLASS_POSITION% EQU 1 SET COLOR_COUNT=%BESTCOLORS%
+IF %COLOR_CLASS_POSITION% EQU 2 SET COLOR_COUNT=%GOODCOLORS%
+IF %COLOR_CLASS_POSITION% EQU 3 SET COLOR_COUNT=%MARGINALCOLORS%
+IF %COLOR_CLASS_POSITION% EQU 4 SET COLOR_COUNT=%SOLIDCOLORS%
+IF %COLOR_CLASS_POSITION% EQU 5 SET COLOR_COUNT=%ERRORCOLORS%
+
+FOR /F "tokens=%COLOR_CLASS_POSITION% delims=," %%P IN ("%COLOR_CLASS%") DO (SET COLOR_CLASS_SEARCH=%%P)
+ECHO Processing %COLOR_CLASS_SEARCH% colors...
+:: Count the 0's
+ECHO "%COLOR_COUNT%" | (FIND "00" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "01" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "02" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "03" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "04" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "05" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "06" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "07" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "08" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "09" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "0A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "0B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "0C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "0D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "0E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "0F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: Count the 1's
+ECHO "%COLOR_COUNT%" | (FIND "10" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "11" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "12" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "13" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "14" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "15" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "16" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "17" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "18" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "19" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "1A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "1B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "1C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "1D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "1E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "1F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: Count the 2's
+ECHO "%COLOR_COUNT%" | (FIND "20" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "21" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "22" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "23" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "24" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "25" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "26" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "27" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "28" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "29" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "2A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "2B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "2C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "2D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "2E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "2F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: Count the 3's
+ECHO "%COLOR_COUNT%" | (FIND "30" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "31" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "32" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "33" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "34" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "35" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "36" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "37" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "38" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "39" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "3A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "3B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "3C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "3D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "3E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "3F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: Count the 4's
+ECHO "%COLOR_COUNT%" | (FIND "40" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "41" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "42" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "43" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "44" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "45" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "46" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "47" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "48" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "49" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "4A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "4B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "4C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "4D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "4E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "4F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: Count 5's
+ECHO "%COLOR_COUNT%" | (FIND "50" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "51" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "52" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "53" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "54" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "55" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "56" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "57" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "58" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "59" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "5A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "5B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "5C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "5D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "5E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "5F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: Count 6's
+ECHO "%COLOR_COUNT%" | (FIND "60" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "61" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "62" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "63" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "64" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "65" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "66" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "67" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "68" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "69" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "6A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "6B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "6C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "6D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "6E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "6F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count 7's
+ECHO "%COLOR_COUNT%" | (FIND "70" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "71" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "72" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "73" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "74" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "75" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "76" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "77" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "78" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "79" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "7A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "7B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "7C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "7D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "7E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "7F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count 8's
+ECHO "%COLOR_COUNT%" | (FIND "80" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "81" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "82" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "83" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "84" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "85" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "86" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "87" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "88" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "89" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "8A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "8B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "8C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "8D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "8E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "8F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count 9's
+ECHO "%COLOR_COUNT%" | (FIND "90" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "91" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "92" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "93" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "94" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "95" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "96" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "97" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "98" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "99" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "9A" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "9B" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "9C" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "9D" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "9E" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "9F" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count A's
+ECHO "%COLOR_COUNT%" | (FIND "A0" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A1" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A2" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A3" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A4" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A5" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A6" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A7" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A8" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "A9" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "AA" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "AB" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "AC" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "AD" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "AE" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "AF" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count B's
+ECHO "%COLOR_COUNT%" | (FIND "B0" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B1" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B2" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B3" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B4" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B5" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B6" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B7" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B8" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "B9" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "BA" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "BB" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "BC" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "BD" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "BE" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "BF" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count C's
+ECHO "%COLOR_COUNT%" | (FIND "C0" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C1" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C2" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C3" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C4" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C5" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C6" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C7" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C8" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "C9" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "CA" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "CB" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "CC" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "CD" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "CE" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "CF" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count D's
+ECHO "%COLOR_COUNT%" | (FIND "D0" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D1" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D2" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D3" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D4" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D5" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D6" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D7" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D8" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "D9" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "DA" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "DB" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "DC" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "DD" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "DE" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "DF" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count E's
+ECHO "%COLOR_COUNT%" | (FIND "E0" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E1" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E2" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E3" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E4" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E5" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E6" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E7" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E8" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "E9" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "EA" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "EB" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "EC" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "ED" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "EE" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "EF" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: ECHO Count F's
+ECHO "%COLOR_COUNT%" | (FIND "F0" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F1" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F2" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F3" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F4" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F5" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F6" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F7" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F8" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "F9" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "FA" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "FB" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "FC" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "FD" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "FE" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+ECHO "%COLOR_COUNT%" | (FIND "FF" >nul 2>nul) && SET /A COLOR_COUNTER_TOTAL+=1
+:: What's the final total
+SET COLOR_COUNTER_TOTAL_%COLOR_CLASS_SEARCH%=%COLOR_COUNTER_TOTAL%
+SET COLOR_COUNTER_TOTAL=0
+SET /A COLOR_CLASS_POSITION+=1
+IF %COLOR_CLASS_POSITION% LSS 6 GoTo loop
+
+:: ECHO COLOR_COUNTER_TOTAL_BEST: %COLOR_COUNTER_TOTAL_BEST%
+:: ECHO COLOR_COUNTER_TOTAL_GOOD: %COLOR_COUNTER_TOTAL_GOOD%
+:: ECHO COLOR_COUNTER_TOTAL_MARGINAL: %COLOR_COUNTER_TOTAL_MARGINAL%
+:: ECHO COLOR_COUNTER_TOTAL_SOLID: %COLOR_COUNTER_TOTAL_SOLID%
+:: ECHO COLOR_COUNTER_TOTAL_ERROR: %COLOR_COUNTER_TOTAL_ERROR%
 
 
 :Intro
@@ -130,15 +438,19 @@ ECHO ------------------------------------
 IF DEFINED BACKGROUND_COLOR IF DEFINED TEXT_COLOR IF DEFINED mColorB Echo Background: %mColorB%
 IF DEFINED BACKGROUND_COLOR IF DEFINED TEXT_COLOR IF DEFINED mColorT Echo Text      : %mColorT%
 ECHO ------------------------------------
-Echo Total Combinations: 256
-Echo Unusable Combinations: 119
-Echo Adjusted Usuable Combinations: 137
+
+SET /A COLOR_USABLE_TOTALS=%COLOR_COUNTER_TOTAL_BEST%+%COLOR_COUNTER_TOTAL_GOOD%
+ECHO Usuable Combinations: %COLOR_USABLE_TOTALS%
+SET /A COLOR_UNUSABLE_TOTALS=%COLOR_COUNTER_TOTAL_MARGINAL%+%COLOR_COUNTER_TOTAL_SOLID%+%COLOR_COUNTER_TOTAL_ERROR%
+ECHO Unusuable Combinations: %COLOR_UNUSABLE_TOTALS%
+SET /A COLOR_TOTALS=%COLOR_COUNTER_TOTAL_BEST%+%COLOR_COUNTER_TOTAL_GOOD%+%COLOR_COUNTER_TOTAL_MARGINAL%+%COLOR_COUNTER_TOTAL_SOLID%+%COLOR_COUNTER_TOTAL_ERROR%
+Echo Total Combinations: %COLOR_TOTALS%
 ECHO ------------------------------------
-ECHO   # Best Colors: 68
-ECHO   # Good Colors: 69
-ECHO   # Marginal Colors: 77
-ECHO   # Solid: 26
-ECHO   # Error: 16
+ECHO   # Best Colors: %COLOR_COUNTER_TOTAL_BEST%
+ECHO   # Good Colors: %COLOR_COUNTER_TOTAL_GOOD%
+ECHO   # Marginal Colors: %COLOR_COUNTER_TOTAL_MARGINAL%
+ECHO   # Solid: %COLOR_COUNTER_TOTAL_SOLID%
+ECHO   # Error: %COLOR_COUNTER_TOTAL_ERROR%
 Echo ------------------------------------
 Echo.
 :: Don't mess with the formatting of the spaces
@@ -482,33 +794,38 @@ Echo.
 Echo.
 Timeout /T %PS%
 cls
-mode con:cols=50 lines=36
+mode con:cols=51 lines=38
 IF %Color1%==%Color2% (SET Color1=NotSet & SET Color2=NotSet)
 IF %Color1%==%Color2% GoTo Random1
 SET sColor=%Color1%%Color2%
 Color %Color1%%Color2%
-Echo *************************************************
-Echo. 
-Echo Location: Random
-Echo.                                              
-Echo %Statement%
-Echo.                                                
-Echo *************************************************
 Echo.
+Echo **************************************************
+Echo       Location: Random
+Echo **************************************************
 Echo.
 Echo Color code is %sColor%
-Echo.
 Echo Color Scheme is:
-Echo _________________
+Echo -------------------------
 Echo Background: %nColor1%
 Echo Text      : %nColor2%
-Echo.
+:: Find the COLOR CLASS
+ECHO %BESTCOLORS% | (FIND "%sColor%" >nul 2>nul) && (ECHO Color Class: Best) && GoTo skipRCC
+ECHO %GoodColors% | (FIND "%sColor%" >nul 2>nul) && (ECHO Color Class: Good) && GoTo skipRCC
+ECHO %MARGINALCOLORS% | (FIND "%sColor%" >nul 2>nul) && (ECHO Color Class: Marginal) && GoTo skipRCC
+ECHO %SOLIDCOLORS% | (FIND "%sColor%" >nul 2>nul) && (ECHO Color Class: Solid) && GoTo skipRCC
+:skipRCC
 SET /A Counter+=1
 SET /A Remaining=%iterations%-%Counter%
-Echo.
+ECHO.
 Echo Counter Number = %Counter%
 Echo Remaining Iterations = %Remaining%
 Echo Total Iterations = %iterations%
+Echo.
+Echo.
+ECHO ##################################################
+Echo %Statement%
+ECHO ##################################################
 Echo.
 @Timeout /T %ts%
 IF %COUNTER%==%iterations% Echo No more iterations!
@@ -722,12 +1039,12 @@ IF "%TEXT_COLOR%"=="%cColorD%" SET mColorT=%nColorD%
 IF "%TEXT_COLOR%"=="%cColorE%" SET mColorT=%nColorE%
 IF "%TEXT_COLOR%"=="%cColorF%" SET mColorT=%nColorF%
 ECHO.
-ECHO %MARGINALCOLORS% | (FIND "%MANUAL_COLOR%" > %TEMP%\nul) && (COLOR 8F) && (ECHO That is a marginal color choice! Back to default color.) && (ECHO.)
-ECHO %SOLIDCOLORS% | (FIND "%MANUAL_COLOR%" > %TEMP%\nul) && (COLOR 8F) && (ECHO That is a solid color combo that can't be viewed! Back to default color.) && (ECHO.)
-ECHO %MARGINALCOLORS% | (FIND "%MANUAL_COLOR%" > %TEMP%\nul) && PAUSE
-ECHO %SOLIDCOLORS% | (FIND "%MANUAL_COLOR%" > %TEMP%\nul) && PAUSE
-ECHO %MARGINALCOLORS% | (FIND "%MANUAL_COLOR%" > %TEMP%\nul) && GoTo manual
-ECHO %SOLIDCOLORS% | (FIND "%MANUAL_COLOR%" > %TEMP%\nul) && GoTo manual
+ECHO %MARGINALCOLORS% | (FIND "%MANUAL_COLOR%" >nul 2>nul) && (COLOR 8F) && (ECHO That is a marginal color choice! Back to default color.) && (ECHO.)
+ECHO %SOLIDCOLORS% | (FIND "%MANUAL_COLOR%" >nul 2>nul) && (COLOR 8F) && (ECHO That is a solid color combo that can't be viewed! Back to default color.) && (ECHO.)
+ECHO %MARGINALCOLORS% | (FIND "%MANUAL_COLOR%" >nul 2>nul) && PAUSE
+ECHO %SOLIDCOLORS% | (FIND "%MANUAL_COLOR%" >nul 2>nul) && PAUSE
+ECHO %MARGINALCOLORS% | (FIND "%MANUAL_COLOR%" >nul 2>nul) && GoTo manual
+ECHO %SOLIDCOLORS% | (FIND "%MANUAL_COLOR%" >nul 2>nul) && GoTo manual
 ECHO Background: %BACKGROUND_COLOR% [%mColorB%]
 ECHO Text:       %TEXT_COLOR% [%mColorT%]
 ECHO.
