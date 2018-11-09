@@ -8,7 +8,7 @@ Explore the BEST colors, GOOD colors, MARGINAL colors, SOLID colors, and ERROR c
 
 ![alt text][logo]
 
-[logo]: https://raw.githubusercontent.com/DavidGeeraerts/CSCE/master/CSCE_Intro_Screenshot.png "Screenshot of Introduction"
+[logo]: https://raw.githubusercontent.com/DavidGeeraerts/CSCE/master/Screenshots/CSCE_Intro_Screenshot.png "Screenshot of Introduction"
 
 ---
 ### The Menu
@@ -97,7 +97,7 @@ Provides a breakdown for the color class either by using the default color class
 ---
 ![alt text][statement]
 
-[statement]: https://raw.githubusercontent.com/DavidGeeraerts/CSCE/master/CSCE_Default_Statement_Screenshot.png "Default statement"
+[statement]: https://raw.githubusercontent.com/DavidGeeraerts/CSCE/master/Screenshots/CSCE_Default_Statement_Screenshot.png "Default statement"
 
 ---
 ### Code Of Conduct
