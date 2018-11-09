@@ -1,5 +1,5 @@
 # Windows Command Shell Color Explorer
----
+
 ## Overview
 
 Windows Command Shell Color Explorer (CSCE) explorers the 256 available color schemes within the Windows command shell.
@@ -10,9 +10,9 @@ Explore the BEST colors, GOOD colors, MARGINAL colors, SOLID colors, and ERROR c
 
 [logo]: https://raw.githubusercontent.com/DavidGeeraerts/CSCE/master/Screenshots/CSCE_Intro_Screenshot.png "Screenshot of Introduction"
 
----
-### The Menu
 
+### The Menu
+---
 1. Introduction
 2. Manual Color (Also sets the default)
 3. Best Colors
@@ -25,7 +25,7 @@ Explore the BEST colors, GOOD colors, MARGINAL colors, SOLID colors, and ERROR c
 
 
 #### Menu Details
-
+---
 1. **Introduction**
 
 Provides a breakdown for the color class either by using the default color class or by using custom color class provided by text files
@@ -83,6 +83,7 @@ Provides a breakdown for the color class either by using the default color class
 	-Shows license information
 
 ### Features
+---
 - Automatic parsing of color class
 - Uses powershell for random 
 - Configure custom statement in statement.txt file
@@ -93,14 +94,21 @@ Provides a breakdown for the color class either by using the default color class
 - CSV file dump for color class
 
 
+### Installation
+---
+From the main project page on GitHub, click on "Clone or download"; select "Download ZIP". Uncompress the package and run the cmd script [CommandShellColorExplorer.cmd](CommandShellColorExplorer.cmd)
+
 
 ---
 ![alt text][statement]
 
 [statement]: https://raw.githubusercontent.com/DavidGeeraerts/CSCE/master/Screenshots/CSCE_Default_Statement_Screenshot.png "Default statement"
 
----
+
+
+
 ### Code Of Conduct
+---
 * **Be a Good human**
 	- Speak the truth (or at least don't lie).
 	- Give the benefit of the doubt that 'we' are all moving forward.

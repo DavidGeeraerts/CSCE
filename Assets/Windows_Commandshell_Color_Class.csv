@@ -38,17 +38,17 @@ Background Color,Text Color,Color scheme,Color Class
 2,4,24,Marginal
 2,5,25,Marginal
 2,6,26,Marginal
-2,7,27,Marginal
+2,7,27,Good
 2,8,28,Marginal
 2,9,29,Marginal
 2,A,2A,Best
 2,B,2B,Best
 2,C,2C,Marginal
 2,D,2D,Marginal
-2,E,2E,Marginal
+2,E,2E,Good
 2,F,2F,Best
 3,0,30,Good
-3,1,31,Marginal
+3,1,31,Good
 3,2,32,Solid
 3,3,33,Error
 3,4,34,Marginal
@@ -71,7 +71,7 @@ Background Color,Text Color,Color scheme,Color Class
 4,5,45,Solid
 4,6,46,Marginal
 4,7,47,Best
-4,8,48,Good
+4,8,48,Marginal
 4,9,49,Marginal
 4,A,4A,Good
 4,B,4B,Good
@@ -96,7 +96,7 @@ Background Color,Text Color,Color scheme,Color Class
 5,E,5E,Best
 5,F,5F,Best
 6,0,60,Best
-6,1,61,Marginal
+6,1,61,Good
 6,2,62,Marginal
 6,3,63,Marginal
 6,4,64,Good
@@ -105,8 +105,8 @@ Background Color,Text Color,Color scheme,Color Class
 6,7,67,Good
 6,8,68,Solid
 6,9,69,Good
-6,A,6A,Best
-6,B,6B,Best
+6,A,6A,Good
+6,B,6B,Good
 6,C,6C,Marginal
 6,D,6D,Marginal
 6,E,6E,Best
@@ -124,7 +124,7 @@ Background Color,Text Color,Color scheme,Color Class
 7,A,7A,Marginal
 7,B,7B,Marginal
 7,C,7C,Good
-7,D,7D,Marginal
+7,D,7D,Good
 7,E,7E,Good
 7,F,7F,Best
 8,0,80,Best
@@ -155,7 +155,7 @@ Background Color,Text Color,Color scheme,Color Class
 9,9,99,Error
 9,A,9A,Good
 9,B,9B,Best
-9,C,9C,Marginal
+9,C,9C,Good
 9,D,9D,Good
 9,E,9E,Best
 9,F,9F,Best
@@ -165,7 +165,7 @@ A,2,A2,Good
 A,3,A3,Good
 A,4,A4,Good
 A,5,A5,Good
-A,6,A6,Good
+A,6,A6,Marginal
 A,7,A7,Solid
 A,8,A8,Good
 A,9,A9,Good
