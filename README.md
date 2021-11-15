@@ -4,7 +4,13 @@
 
 Windows Command Shell Color Explorer (CSCE) explorers the 256 available color schemes within the Windows command shell.
 Explore the BEST colors, GOOD colors, MARGINAL colors, SOLID colors, and ERROR colors (which are not visible).
+Color rating is subjective. In general, color rating will follow these guidelines:
 
+- BEST: Highly readable, with an excellent color scheme.
+- GOOD: Highly readable, but may not provide an ideal color scheme.
+- MARGINAL: Poor readability.
+- SOLID: Technically not an error combination, but it might as well be.
+ 
 
 ![alt text][logo]
 
@@ -113,4 +119,4 @@ From the main project page on GitHub, click on "Clone or download"; select "Down
 	- Speak the truth (or at least don't lie).
 	- Give the benefit of the doubt that 'we' are all moving forward.
 	- Listen to the person as though you have something to learn from them.
-	- Challenge ideas not the individual.
+	- Challenge ideas, not the individual.
