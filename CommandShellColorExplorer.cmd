@@ -29,7 +29,7 @@ setlocal enableextensions
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 SET "SCRIPT_NAME=Command Shell Color Explorer (CSCE)"
-SET SCRIPT_VERSION=2.4.3
+SET SCRIPT_VERSION=2.4.4
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 Title %SCRIPT_NAME% %SCRIPT_VERSION%
@@ -96,22 +96,22 @@ SET /A Remaining=%iterations%-%Counter%
 SET COLOR_CLASS=BEST,GOOD,MARGINAL,SOLID,ERROR
 
 SET BESTCOLORS=02 03 04 06 07 09 0A 0B 0C 0E 0F 17 1B 1E 1F 20 2B 2E 2F 30 3E 3F 40 47 4E 4F 57 5E 5F 60 6E 6F 70 71 72 73 74 75 79 7C 80 81 86 87 8B 8E 8F 97 9B 9E 9F A0 A1 AF B0 C0 CF D7 DE DF E0 E1 E4 E5 F0 F1 F2 F3 F4 F5 F8 F9 FC FD
-IF EXIST "%~dp0\BEST_COLORS.txt" SET /P BESTCOLORS= < "%~dp0\Configurations\BEST_COLORS.txt"
+IF EXIST "%~dp0\Configurations\BEST_COLORS.txt" SET /P BESTCOLORS= < "%~dp0\Configurations\BEST_COLORS.txt"
 :: Good colors
 SET GOODCOLORS=05 08 0D 12 13 16 18 1A 1C 21 27 31 37 3B 41 4B 50 56 5B 5C 61 64 65 69 6D 76 78 7A 7D 7E 7F 8A 90 96 9A A5 AE B1 B4 B5 B8 B9 BD BE BF C1 C7 C9 CE D0 D6 DB E2 E3 E8 E9 EA EC ED F6 FA
-IF EXIST "%~dp0\GOOD_COLORS.txt" SET /P GOODCOLORS= < "%~dp0\Configurations\GOOD_COLORS.txt"
+IF EXIST "%~dp0\Configurations\GOOD_COLORS.txt" SET /P GOODCOLORS= < "%~dp0\Configurations\GOOD_COLORS.txt"
 :: Marginal Colors
 SET MARGINALCOLORS=01 14 19 1D 24 25 26 28 2A 2D 34 35 36 3A 3C 3D 43 46 4A 4C 51 52 53 54 58 59 5A 62 63 67 68 6B 6C 7B 82 83 85 8C 8D 91 95 9C 9D A2 A3 A4 A7 A8 A9 AB AC AD B2 B3 B6 BA BC C2 C3 C4 C5 C8 CA CB D1 D5 D9 DA DC E6 E7 EB F7 FB
-IF EXIST "%~dp0\MARGINAL_COLORS.txt" SET /P MARGINALCOLORS= < "%~dp0\Configurations\MARGINAL_COLORS.txt"
+IF EXIST "%~dp0\Configurations\MARGINAL_COLORS.txt" SET /P MARGINALCOLORS= < "%~dp0\Configurations\MARGINAL_COLORS.txt"
 :: These are bad color combinations
 SET SOLIDCOLORS=10 15 23 29 2C 32 38 39 42 45 48 49 4D 5D 6A 84 89 92 93 94 98 A6 B7 C6 CD D2 D3 D4 D8 EF FE
-IF EXIST "%~dp0\SOLID_COLORS.txt" SET /P SOLIDCOLORS= < "%~dp0\Configurations\SOLID_COLORS.txt"
+IF EXIST "%~dp0\Configurations\SOLID_COLORS.txt" SET /P SOLIDCOLORS= < "%~dp0\Configurations\SOLID_COLORS.txt"
 :: Colors that produce an errorlevel 1
 SET ERRORCOLORS=00 11 22 33 44 55 66 77 88 99 AA BB CC DD EE FF
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Custom Statement in a text file
-IF EXIST "%~dp0\statement.txt" SET /P STATEMENT= < "%~dp0\Configurations\statement.txt"
+IF EXIST "%~dp0\Configurations\statement.txt" SET /P STATEMENT= < "%~dp0\Configurations\statement.txt"
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 mode con:cols=52 lines=20
 :: Even though it looks awkward in the editor its formatted correctly for the screen.
